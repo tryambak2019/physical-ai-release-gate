@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A small working prototype that catches a robot failure ordinary software tests miss.">
+  <title>Robot Release Gate</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">PHYSICAL AI · RELEASE TESTING</p>
+      <h1>The software worked.<br><em>The robot failed.</em></h1>
+      <p class="lede">A beneficial-looking runtime update passed every software check—but made one decision arrive too late for the physical world.</p>
+    </header>
+
+    <section class="update" aria-label="software update results">
+      <div><span>PROPOSED AI RUNTIME UPDATE</span><strong>Software verdict: PASS</strong></div>
+      <ul><li>✓ 30% higher throughput</li><li>✓ Same prediction accuracy</li><li>✓ Build and APIs passed</li></ul>
+    </section>
+
+    <section class="scene" aria-labelledby="scene-title">
+      <div class="scene-copy">
+        <p class="step">THE PHYSICAL TEST</p>
+        <h2 id="scene-title">The box moved.<br>The robot acted on old information.</h2>
+        <p>The gate runs the complete task—not only the individual components.</p>
+        <div class="clock"><b id="delay">0 ms</b><span>decision delay</span></div>
+      </div>
+      <div class="stage" aria-label="Animated robot arm missing a moving parcel">
+        <div class="conveyor"><i></i><i></i><i></i><i></i></div>
+        <div class="ghost" id="ghost">LAST SEEN</div>
+        <div class="parcel" id="parcel">PACKAGE</div>
+        <div class="arm" id="arm"><div class="upper"></div><div class="joint"></div><div class="fore"></div><div class="gripper"><i></i><i></i></div></div>
+        <div class="status" id="status">REPLAYING SAME TASK</div>
+      </div>
+    </section>
+
+    <section class="verdict" id="verdict" aria-live="polite">
+      <div><p>PHYSICAL RELEASE GATE</p><h2>Unsafe behavior caught before deployment.</h2></div>
+      <strong>RELEASE BLOCKED</strong>
+    </section>
+
+    <footer>
+      <p><b>Built:</b> a small working release test &nbsp;·&nbsp; <b>Next:</b> reproduce the failure in MuJoCo, then compare against hardware replay.</p>
+      <a href="https://github.com/tryambak2019/physical-ai-release-gate">View implementation →</a>
+    </footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
