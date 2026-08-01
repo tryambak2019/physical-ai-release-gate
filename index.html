@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="A small working prototype that catches a physical-task regression before robot deployment.">
+  <meta name="description" content="A small working prototype that catches a robot failure ordinary component tests miss.">
   <title>Robot Release Gate</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -11,47 +11,34 @@
   <main>
     <header>
       <p class="eyebrow">PHYSICAL AI · RELEASE TESTING</p>
-      <h1>The model stayed correct.<br><em>The machine became unreliable.</em></h1>
-      <p class="lede">A faster AI-runtime update looked better in isolation. The release gate replayed the complete moving task—and caught what the component checks could not.</p>
+      <h1>The software worked.<br><em>The robot failed.</em></h1>
+      <p class="lede">A runtime update looked better in isolation—but made one decision arrive too late for a moving robot task.</p>
     </header>
 
     <section class="update" aria-label="component check results">
-      <div><span>PROPOSED AI RUNTIME UPDATE</span><strong>Component verdict: PASS</strong></div>
-      <ul><li>✓ Identical model outputs</li><li>✓ 30% higher throughput</li><li>✓ Build and API checks passed</li></ul>
+      <div><span>PROPOSED AI RUNTIME UPDATE</span><strong>Component checks: PASS</strong></div>
+      <ul><li>✓ 30% higher throughput</li><li>✓ Identical model outputs</li><li>✓ Build and APIs passed</li></ul>
     </section>
 
     <section class="scene" aria-labelledby="scene-title">
       <div class="scene-copy">
-        <p class="step">THE COMPLETE MOVING TASK</p>
-        <h2 id="scene-title">The package moved.<br>The gripper arrived late.</h2>
-        <p>Under operating load, one time-sensitive command missed its deadline.</p>
-        <div class="clock"><b id="delay">0 ms</b><span>command delay</span></div>
+        <p class="step">THE PHYSICAL TEST</p>
+        <h2 id="scene-title">The package moved.<br>The gripper closed too late.</h2>
+        <p>Under operating load, one decision arrived 180 ms late. The gate tests the complete moving task—not only its components.</p>
+        <div class="clock"><b id="delay">0 ms</b><span>decision delay</span></div>
       </div>
-      <div class="stage" aria-label="Robot arm arriving late and missing a package on a moving conveyor">
-        <div class="task-label">TASK: PICK PACKAGE FROM MOVING BELT</div>
-        <div class="pickup-line"><span>PICKUP POINT</span></div>
+      <div class="stage" aria-label="Animated overhead gripper missing a package on a moving conveyor">
         <div class="conveyor"><i></i><i></i><i></i><i></i></div>
+        <div class="pickup" id="pickup"><span>PICKUP POINT</span></div>
         <div class="parcel" id="parcel">PACKAGE</div>
-        <svg class="robot" viewBox="0 0 300 300" aria-hidden="true">
-          <g class="robot-motion" id="robot-motion">
-            <circle class="shoulder" cx="220" cy="50" r="22"/>
-            <line class="upper" x1="220" y1="50" x2="184" y2="112"/>
-            <circle class="joint" cx="184" cy="112" r="18"/>
-            <line class="fore" x1="184" y1="112" x2="150" y2="184"/>
-            <circle class="wrist" cx="150" cy="184" r="13"/>
-            <line class="palm" x1="150" y1="184" x2="150" y2="205"/>
-            <g class="fingers" id="fingers">
-              <path class="finger left" d="M150 203 L134 209 L134 244"/>
-              <path class="finger right" d="M150 203 L166 209 L166 244"/>
-            </g>
-          </g>
-        </svg>
-        <div class="status" id="status">REPLAYING COMPLETE TASK</div>
+        <div class="gantry" aria-hidden="true"></div>
+        <div class="arm" id="arm"><div class="carriage"></div><div class="column"></div><div class="wrist"></div><div class="gripper"><i></i><i></i></div></div>
+        <div class="status" id="status">REPLAYING MOVING TASK</div>
       </div>
     </section>
 
     <section class="verdict" id="verdict" aria-live="polite">
-      <div><p>ROBOT RELEASE GATE</p><h2>The gripper missed. The update was blocked.</h2></div>
+      <div><p>PHYSICAL RELEASE GATE</p><h2>Task regression caught before deployment.</h2></div>
       <strong>RELEASE BLOCKED</strong>
     </section>
 

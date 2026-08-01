@@ -1,60 +1,57 @@
 const parcel=document.querySelector('#parcel');
-const robot=document.querySelector('#robot-motion');
-const fingers=document.querySelector('#fingers');
+const pickup=document.querySelector('#pickup');
+const arm=document.querySelector('#arm');
+const stage=document.querySelector('.stage');
 const delay=document.querySelector('#delay');
 const status=document.querySelector('#status');
 const verdict=document.querySelector('#verdict');
-const stage=document.querySelector('.stage');
-const pickup=document.querySelector('.pickup-line');
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+let run=0;
 
-function travelToPickup(extra=0){
-  const box=parcel.getBoundingClientRect();
-  const mark=pickup.getBoundingClientRect();
-  return mark.left-(box.left+box.width/2)+extra;
+function geometry(){
+  const stageBox=stage.getBoundingClientRect();
+  const parcelBox=parcel.getBoundingClientRect();
+  const target=pickup.getBoundingClientRect().left+pickup.offsetWidth/2-stageBox.left;
+  const start=parcelBox.left-stageBox.left+parcelBox.width/2;
+  return {afterPickup:Math.min(stageBox.width-parcelBox.width/2-18,target+92)-start};
 }
 
 async function replay(){
+  const id=++run;
+  const live=()=>id===run;
+  const path=geometry();
   parcel.style.transition='none';
-  parcel.style.transform='translate(0,0) rotate(0)';
-  robot.style.transition='none';
-  robot.style.transform='translateY(0)';
-  fingers.classList.remove('closed');
+  parcel.style.transform='translate(0,0)';
+  arm.style.transition='none';
+  arm.style.transform='translateX(-50%) translateY(0)';
+  arm.classList.remove('closed');
   delay.textContent='0 ms';
-  status.textContent='REPLAYING COMPLETE TASK';
+  status.textContent='REPLAYING MOVING TASK';
   status.style.background='#223140';
   verdict.classList.remove('show');
-  await wait(700);
+  await wait(650); if(!live())return;
 
-  const passedPickup=travelToPickup(64);
-  parcel.style.transition='transform 2.4s linear';
-  parcel.style.transform=`translateX(${passedPickup}px)`;
-  await wait(1850);
-
+  parcel.style.transition='transform 2.35s linear';
+  parcel.style.transform=`translateX(${path.afterPickup}px)`;
+  await wait(1320); if(!live())return;
   delay.textContent='180 ms';
-  status.textContent='COMMAND ARRIVES 180 ms LATE';
+  status.textContent='DECISION ARRIVES 180 MS LATE';
   status.style.background='#725014';
+  await wait(360); if(!live())return;
 
-  robot.style.transition='transform .5s ease-in-out';
-  robot.style.transform='translateY(14px)';
-  await wait(450);
-
-  fingers.classList.add('closed');
-  status.textContent='GRIPPER CLOSES AT EMPTY PICKUP POINT';
+  arm.style.transition='transform .28s ease-out';
+  arm.style.transform='translateX(-50%) translateY(16px)';
+  await wait(260); if(!live())return;
+  arm.classList.add('closed');
+  status.textContent='GRIPPER CLOSES — PACKAGE HAS PASSED';
   status.style.background='#8a3029';
-  await wait(850);
+  await wait(650); if(!live())return;
 
-  const beltEnd=stage.clientWidth-parcel.offsetLeft-parcel.offsetWidth+28;
-  parcel.style.transition='transform 1.15s linear';
-  parcel.style.transform=`translateX(${beltEnd}px)`;
-  await wait(1150);
-
-  parcel.style.transition='transform .65s ease-in';
-  parcel.style.transform=`translate(${beltEnd}px,145px) rotate(35deg)`;
-  status.textContent='PICKUP MISSED · TASK FAILED';
   verdict.classList.add('show');
-  await wait(2800);
-  replay();
+  status.textContent='MOVING TASK: FAILED';
+  await wait(2600); if(live())replay();
 }
 
+let resizeTimer;
+window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(replay,150)});
 replay();
