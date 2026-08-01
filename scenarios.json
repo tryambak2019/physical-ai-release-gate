@@ -1,0 +1,25 @@
+{
+  "policy": {
+    "minimum_pickup_success_rate": 1.0,
+    "maximum_p99_decision_latency_ms": 100,
+    "maximum_dropped_packages": 0
+  },
+  "runs": [
+    {
+      "name": "baseline",
+      "throughput_fps": 100,
+      "model_outputs_match_reference": true,
+      "pickup_success_rate": 1.0,
+      "p99_decision_latency_ms": 72,
+      "dropped_packages": 0
+    },
+    {
+      "name": "candidate",
+      "throughput_fps": 130,
+      "model_outputs_match_reference": true,
+      "pickup_success_rate": 0.0,
+      "p99_decision_latency_ms": 180,
+      "dropped_packages": 1
+    }
+  ]
+}

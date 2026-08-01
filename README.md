@@ -1,5 +1,7 @@
 # Robot Release Gate
 
+[![Release gate tests](https://github.com/tryambak2019/physical-ai-release-gate/actions/workflows/test.yml/badge.svg)](https://github.com/tryambak2019/physical-ai-release-gate/actions/workflows/test.yml)
+
 **Test how the machine behaves—not just whether the code runs.**
 
 A small working prototype exploring a release-testing gap in Physical AI: a software update can improve conventional metrics while making the complete robot less reliable.
@@ -18,6 +20,23 @@ This deliberately tests an outcome independent of the update itself:
 
 The demo is self-contained and deterministic. No backend or model download is required.
 
+## Executable release gate
+
+The page explains the failure; the Python gate makes the deployment decision. It evaluates deterministic run evidence from `scenarios.json` against explicit policy thresholds:
+
+```bash
+python3 gate.py scenarios.json --output results.json
+```
+
+The checked-in example blocks the candidate because its `180 ms` p99 decision latency exceeds the `100 ms` budget and the moving pickup fails. Higher throughput never overrides a failed physical task.
+
+```text
+baseline  PASS  — eligible reference run
+candidate BLOCK — latency budget exceeded; pickup failed; package dropped
+```
+
+Run the test suite with `pytest`. GitHub Actions runs it on every push and pull request.
+
 ## What this proves—and what it does not
 
 It proves the release-gate idea can be made concrete: compare the current and proposed versions on the same task, measure the physical outcome, and turn that evidence into a deployment decision.
@@ -30,7 +49,7 @@ Reproduce the stale-observation failure in MuJoCo with an existing robot-arm mod
 
 ## Run locally
 
-Open `index.html`, or serve the directory:
+For the browser demo, open `index.html`, or serve the directory:
 
 ```bash
 python3 -m http.server 8000

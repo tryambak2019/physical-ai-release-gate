@@ -1,0 +1,40 @@
+{
+  "policy": {
+    "minimum_pickup_success_rate": 1.0,
+    "maximum_p99_decision_latency_ms": 100,
+    "maximum_dropped_packages": 0
+  },
+  "decisions": [
+    {
+      "name": "baseline",
+      "decision": "PASS",
+      "failures": [],
+      "evidence": {
+        "name": "baseline",
+        "throughput_fps": 100,
+        "model_outputs_match_reference": true,
+        "pickup_success_rate": 1.0,
+        "p99_decision_latency_ms": 72,
+        "dropped_packages": 0
+      }
+    },
+    {
+      "name": "candidate",
+      "decision": "BLOCK",
+      "failures": [
+        "pickup success below minimum",
+        "p99 decision latency exceeds budget",
+        "dropped-package limit exceeded"
+      ],
+      "evidence": {
+        "name": "candidate",
+        "throughput_fps": 130,
+        "model_outputs_match_reference": true,
+        "pickup_success_rate": 0.0,
+        "p99_decision_latency_ms": 180,
+        "dropped_packages": 1
+      }
+    }
+  ],
+  "release_allowed": false
+}
